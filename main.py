@@ -4,9 +4,8 @@ import os
 import openai
 
 from flask_cors import CORS
-
 app = Flask(__name__)
-CORS(app, resources={r"/chat": {"origins": "https://majestic-gateway.neocities.org"}})
+CORS(app, resources={r"/*": {"origins": "https://majestic-gateway.neocities.org"}})
 
 # Load Oberon's persona from persona.json
 with open("persona.json", "r") as f:
