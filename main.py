@@ -24,25 +24,22 @@ def home():
 def chat():
     user_message = request.json.get("message", "")
 
-    # Build prompt using persona data and user input
     prompt = f"""
-You are {persona['role']}.
-Tone: {persona['tone']}.
-Constraints: {persona['constraints']}.
-User says: {user_message}
-"""
+    You are {persona['role']}.
+    Tone: {persona['tone']}.
+    Constraints: {persona['constraints']}.
+    User says: {user_message}
+    """
 
     try:
-        # Call OpenAI API to get chat completion
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # Change if needed
+            model="gpt-3.5-turbo",
             messages=[{"role": "system", "content": prompt}],
             max_tokens=250,
             temperature=0.7
         )
         reply = response.choices[0].message["content"].strip()
     except Exception as e:
-        # Return error message as JSON
         return jsonify({"error": str(e)}), 500
 
     return jsonify({"reply": reply})
