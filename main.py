@@ -5,26 +5,29 @@ import openai
 
 app = Flask(__name__)
 
-# Load personas from file
-with open("personas.json", "r") as f:
-    PERSONAS = json.load(f)
+# Load Oberon's persona from persona.json
+with open("persona.json", "r") as f:
+    persona = json.load(f)
 
 # Set your OpenAI API key from Render environment variable
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 @app.route("/")
 def home():
-    return "Chatbot backend is running."
+    return f"{persona['name']} is online."
 
 @app.route("/chat", methods=["POST"])
 def chat():
-    data = request.json
-    bot_name = data.get("bot", "oberon").lower()
-    user_message = data.get("message", "")
+    user_message = request.json.get("message", "")
 
+    # Simple response logic for now
+    response = f"{persona['name']} ({persona['role']}): I hear you say '{user_message}'. {persona['tone']}"
+
+    return jsonify({"reply": response})
+    
     if bot_name not in PERSONAS:
         return jsonify({"error": "Bot not found"}), 404
-
+    
     persona = PERSONAS[bot_name]
     prompt = f"""
     You are {persona['role']}.
