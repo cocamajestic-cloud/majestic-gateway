@@ -1,89 +1,110 @@
 {
   "version": "6.1",
-  "startBlockId": "start",
-  "blocks": [
+  "startNode": "start",
+  "nodes": [
     {
       "id": "start",
       "type": "message",
-      "content": "✨ Greetings, seeker. I am Lyra, the Gatekeeper of Tarot. Would you like me to reveal a card for your journey?",
+      "content": {
+        "type": "text",
+        "text": "✨ Greetings, seeker. I am Lyra, the Gatekeeper of Tarot. Would you like me to reveal a card for your journey?"
+      },
       "next": [
         {
           "condition": "always",
-          "blockId": "ask_choice"
+          "nodeId": "ask_choice"
         }
       ]
     },
     {
       "id": "ask_choice",
       "type": "choice",
-      "content": "Choose one of these cards to unlock your insight:",
+      "content": {
+        "type": "text",
+        "text": "Choose one of these cards to unlock your insight:"
+      },
       "choices": [
         {
           "label": "The Fool",
-          "blockId": "fool_meaning"
+          "nodeId": "fool_meaning"
         },
         {
           "label": "The High Priestess",
-          "blockId": "priestess_meaning"
+          "nodeId": "priestess_meaning"
         },
         {
           "label": "The Tower",
-          "blockId": "tower_meaning"
+          "nodeId": "tower_meaning"
         }
       ]
     },
     {
       "id": "fool_meaning",
       "type": "message",
-      "content": "🃏 The Fool symbolizes new beginnings, leaps of faith, and infinite potential. Are you ready to step into the unknown?",
+      "content": {
+        "type": "text",
+        "text": "🃏 The Fool symbolizes new beginnings, leaps of faith, and infinite potential. Are you ready to step into the unknown?"
+      },
       "next": [
         {
           "condition": "always",
-          "blockId": "ask_repeat"
+          "nodeId": "ask_repeat"
         }
       ]
     },
     {
       "id": "priestess_meaning",
       "type": "message",
-      "content": "🌙 The High Priestess calls you to trust your intuition and embrace the mysteries beneath the surface. What secrets stir within you?",
+      "content": {
+        "type": "text",
+        "text": "🌙 The High Priestess calls you to trust your intuition and embrace the mysteries beneath the surface. What secrets stir within you?"
+      },
       "next": [
         {
           "condition": "always",
-          "blockId": "ask_repeat"
+          "nodeId": "ask_repeat"
         }
       ]
     },
     {
       "id": "tower_meaning",
       "type": "message",
-      "content": "⚡ The Tower warns of sudden change and upheaval, but also liberation from falsehood. Are you prepared for transformation?",
+      "content": {
+        "type": "text",
+        "text": "⚡ The Tower warns of sudden change and upheaval, but also liberation from falsehood. Are you prepared for transformation?"
+      },
       "next": [
         {
           "condition": "always",
-          "blockId": "ask_repeat"
+          "nodeId": "ask_repeat"
         }
       ]
     },
     {
       "id": "ask_repeat",
       "type": "choice",
-      "content": "Would you like to draw another card, or end your journey with me?",
+      "content": {
+        "type": "text",
+        "text": "Would you like to draw another card, or end your journey with me?"
+      },
       "choices": [
         {
           "label": "Draw again",
-          "blockId": "ask_choice"
+          "nodeId": "ask_choice"
         },
         {
           "label": "End session",
-          "blockId": "end"
+          "nodeId": "end"
         }
       ]
     },
     {
       "id": "end",
       "type": "message",
-      "content": "🌟 May your path be illuminated by wisdom. Farewell, seeker.",
+      "content": {
+        "type": "text",
+        "text": "🌟 May your path be illuminated by wisdom. Farewell, seeker."
+      },
       "next": []
     }
   ]
