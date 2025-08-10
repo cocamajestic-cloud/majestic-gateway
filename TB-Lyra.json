@@ -1,5 +1,13 @@
 {
   "version": "6.1",
+  "typebot": {
+    "variables": [],
+    "theme": {},
+    "settings": {},
+    "events": [],
+    "groups": [],
+    "edges": []
+  },
   "startNode": "start",
   "nodes": [
     {
