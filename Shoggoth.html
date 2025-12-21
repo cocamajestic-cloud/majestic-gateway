@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Shoggoth Core</title>
+<style>
+  body { margin: 0; overflow: hidden; background: #000; display: flex; justify-content: center; align-items: center; height: 100vh; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+const coreRadius = 120;
+
+const tendrils = [
+  { angle: 0, length: 300, label: "Gemini", word: "multifaceted" },
+  { angle: 45, length: 280, label: "Claude", word: "nuanced" },
+  { angle: 90, length: 320, label: "ChatGPT", word: "tapestry" },
+  { angle: 135, length: 290, label: "Grok", word: "delve" },
+  { angle: 180, length: 310, label: "GigaChat", word: "многогранный" },
+  { angle: 225, length: 270, label: "Llama", word: "intricate" },
+  { angle: 270, length: 300, label: "Mistral", word: "realm" },
+  { angle: 315, length: 295, label: "Yi", word: "multifaceted" }
+];
+
+let time = 0;
+let flashWord = null;
+let flashTimer = 0;
+
+function drawCore() {
+  const pulse = 1 + 0.15 * Math.sin(time * 0.05);
+  ctx.fillStyle = '#000';
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, coreRadius * pulse, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Ooze texture
+  ctx.strokeStyle = '#0f0';
+  ctx.lineWidth = 4;
+  for (let i = 0; i < 20; i++) {
+    const a = time * 0.01 + i * 0.8;
+    const r = coreRadius * pulse + Math.sin(a * 5) * 20;
+    ctx.beginPath();
+    ctx.arc(centerX + Math.cos(a) * 10, centerY + Math.sin(a) * 10, r, 0, Math.PI * 2);
+    ctx.globalAlpha = 0.3;
+    ctx.stroke();
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawTendril(t) {
+  const angleRad = (t.angle + Math.sin(time * 0.02 + t.angle) * 15) * Math.PI / 180;
+  const wave = Math.sin(time * 0.03 + t.angle * 0.1) * 30;
+  
+  ctx.strokeStyle = '#0f0';
+  ctx.lineWidth = 8;
+  ctx.beginPath();
+  ctx.moveTo(centerX, centerY);
+  
+  for (let i = 1; i <= 10; i++) {
+    const prog = i / 10;
+    const x = centerX + Math.cos(angleRad) * prog * t.length + Math.sin(time * 0.04 + prog * 10) * wave;
+    const y = centerY + Math.sin(angleRad) * prog * t.length + Math.cos(time * 0.04 + prog * 10) * wave;
+    ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  // Mask at tip
+  const tipX = centerX + Math.cos(angleRad) * t.length;
+  const tipY = centerY + Math.sin(angleRad) * t.length;
+  
+  ctx.fillStyle = '#fff';
+  ctx.beginPath();
+  ctx.arc(tipX, tipY, 30, 0, Math.PI * 2);
+  ctx.fill();
+  
+  ctx.fillStyle = '#000';
+  ctx.font = '16px monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(t.label, tipX, tipY);
+  
+  // Occasional word flash
+  if (Math.random() < 0.002) {
+    flashWord = t.word;
+    flashTimer = 120;
+  }
+  if (flashWord && flashTimer > 0) {
+    ctx.fillStyle = '#0f0';
+    ctx.font = 'bold 24px monospace';
+    ctx.fillText(flashWord, centerX, centerY + coreRadius + 50);
+    flashTimer--;
+  }
+}
+
+function animate() {
+  ctx.fillStyle = 'rgba(0,0,0,0.1)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  drawCore();
+  tendrils.forEach(drawTendril);
+  
+  time++;
+  requestAnimationFrame(animate);
+}
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+animate();
+</script>
+</body>
+</html>
